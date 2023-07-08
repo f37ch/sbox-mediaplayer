@@ -1,0 +1,222 @@
+@using Sandbox
+@using System
+@using Sandbox.UI
+
+@namespace MediaPlayer
+@inherits Panel
+<style>
+    Controls {
+		width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        font-family:BerlinSansFBDemi;
+        text-align: center;
+        color:white;
+        overflow: hidden;
+        align-items: center;
+        transition: background-color 250ms ease;
+        .ptext{
+            color: rgba(0, 0, 0, 0);
+            margin-top:auto;
+            margin-bottom:auto;
+            display: flex;
+            
+            justify-content:center;
+            flex-direction: row;
+            font-size: 10vw;
+            transform: scale(0);
+            transition: all 0.25s ease-in-out;
+        }
+        .volume_container {
+          
+            
+            align-items:center;
+            margin-bottom:auto;
+            transform: scale(0);
+            transition: all 0.5s ease-in-out;
+            width: 50%;
+            height: 10%;
+            .slider
+            {
+                
+                .track
+        		{
+                    .inner{
+                        background-color: pink;
+                    }
+        			
+                }
+            }
+        }
+        &.Paused{
+			background-color:rgb(48, 48, 48);
+            .ptext{
+			    transform: scale(1);
+                color: white;
+            }
+            .title{
+			    transform: scale(1);
+                color: white;
+            }
+            .volume_container{
+			    transform: scale(1);
+                color: white;
+            }
+		}
+        .container{
+            align-items:center;
+            bottom:-5%;
+            
+            width: 100%;
+            height: 10%;
+            position: absolute;
+      
+            background-color:rgba(87, 87, 87, 1);
+            opacity: 0.2;
+            transition: bottom 250ms ease opacity 250ms;
+        }
+        .container:hover{
+            opacity: .9;
+            bottom: 0%;
+        }
+
+        .volume_icon {
+            background-size:50%;
+            width:10%;
+            height:100%;
+            right:-1%;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: transparent;
+        }
+        .cbutt {
+            background-size:50%;
+            width:5%;
+            height:100%;
+            right:-1%;
+
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center center;
+    
+            color: transparent;
+            opacity: 0.5;
+            transition: opacity 250ms;
+            transition: background-color 250ms ease;
+        }
+        .cbutt:hover {
+            opacity: 1;
+            background-color: rgb(192, 64, 64);
+            sound-in:ui.button.over;
+        }
+        .slider
+        {
+        
+        	width: 100%;
+            min-height: 50%;
+            align-items: center;
+            padding-right: 50%;
+        	flex-grow: 1;
+
+        	&:hover
+        	{
+        		> .track{
+        			background-color: rgba( rgb(49, 182, 160), 0.5 );
+        		}
+
+        	}
+
+        	> .track
+        	{
+        		position: absolute;
+        		left: 2%;
+        		right: 2%;
+        		height: 100%;
+        		background-color: rgba( rgb(255, 255, 255), 0.1 );
+                transition: background-color 250ms ease;
+        		border-radius: 50%;
+
+        		> .inner
+        		{
+        			background-color: rgb(128, 0, 21);
+        			width: 100%;
+        			height: 100%;
+                    border-radius: 50%;
+        		}
+        	}
+        }
+
+        .title{
+            position: absolute;
+            font-size: 3vw;
+            transform: scale(0);
+            transition: all 0.25s ease-in-out;
+        }
+    }
+</style>
+
+<root>
+    <text class="title">@RootEnt.Title</text>
+    <text class="ptext">PAUSED</text>
+    <div class="volume_container">
+        <div class="volume_icon" style="background:url(/ui/volume.png);"></div>
+        <Slider @ref="VolumeSlider"></Slider>
+    </div>
+    <div class="container">
+        <button @onclick=@(()=>TogglePlay()) class="cbutt" style="background:url(@ToggleImg);"></button>
+        <button @onclick=@(()=>Skip()) class="cbutt" style="background:url(/ui/skip.png);"></button>
+        <Slider @ref="Slider"></Slider>
+    </div>
+</root>
+
+@code{
+    public Slider Slider {get;set;}
+    public Slider VolumeSlider {get;set;}
+    public MPScreen RootEnt {get;set;}
+    public float NextThink{get;set;}=0;
+    public string ToggleImg {get;set;}="/ui/pause.png";
+    
+    void TogglePlay(){
+        MediaController.TogglePlay(RootEnt.NetworkIdent);
+    }
+    
+    void Skip(){
+        if (RootEnt.Paused){
+            Log.Error("[MediaPlayer] Resume playback first!");
+        }else{
+            MediaController.Skip(RootEnt.NetworkIdent);
+        }
+    }
+ 
+    protected override void OnAfterTreeRender(bool firstTime)
+    {
+        base.OnAfterTreeRender(firstTime);
+        if (firstTime)
+        {
+            AcceptsFocus=false;
+            this.Slider.MaxValue=RootEnt.Duration;
+            this.VolumeSlider.Value=RootEnt.Volume;
+            this.Slider.AddEventListener("onmousedown",(PanelEvent val)=> {
+                if (!RootEnt.IsLive&&!RootEnt.Paused){
+                    MediaController.Seek(RootEnt.NetworkIdent,Convert.ToSingle(val.Value));
+                }
+		    });
+            this.VolumeSlider.AddEventListener("onmousedown",(PanelEvent val)=> {
+                if (RootEnt.Paused){
+                    MediaController.SetVolume(RootEnt.NetworkIdent,Convert.ToSingle(val.Value));
+                }
+		    });
+        }
+    }
+    public override void Tick(){
+        base.Tick(); 
+        this.VolumeSlider.Value=Math.Clamp(RootEnt.Volume,3,100);
+    }
+  
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(DateTime.Now.ToString());
+    }
+}

@@ -1,0 +1,41 @@
+{
+  "Title": "MediaPlayer",
+  "Type": "addon",
+  "Org": "playback",
+  "Ident": "mediaplayer",
+  "Tags": "runtime entity video youtube cinema videoplayer mediaplayer map",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "Resources": "ui/*\nmodels/*\nfonts/*\nentity/*\nfonts/*",
+  "MenuResources": null,
+  "HasCode": true,
+  "CodePath": "/code/",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Metadata": {
+    "CsProjName": "",
+    "PrimaryAsset": "MediaPlayer.MPScreen",
+    "PhysicsMins": "-1,-1,-1",
+    "PhysicsMaxs": "1,1,1",
+    "RenderMins": "-1,-1,-1",
+    "RenderMaxs": "-1,-1,-1",
+    "Summary": "play mediacontent and have fun",
+    "Public": true,
+    "Compiler": {
+      "RootNamespace": "Sandbox",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "ReleaseMode": "Release"
+    },
+    "ReplaceTags": "mediaplayer entity player videoplayer youtube cinema runtime map",
+    "PackageSettings": [
+      {
+        "Choices": [],
+        "ConVarName": "",
+        "DisplayName": "New Setting..."
+      }
+    ],
+    "ParentPackage": "facepunch.sandbox"
+  }
+}
