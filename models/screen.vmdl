@@ -19,7 +19,7 @@
 							},
 							{
 								from = "materials/hotspots/metal_painted_red_b_hs.vmat"
-								to = "materials/dev/color_purple.vmat"
+								to = "materials/hotspots/metal_painted_red_b_hs.vmat"
 							},
 						]
 						use_global_default = false
@@ -47,10 +47,10 @@
 							exception_list = 
 							[
 								"hammermesh_41",
-								"hammermesh_37",
 								"hammermesh_38",
 								"hammermesh_39",
 								"hammermesh_40",
+								"hammermesh_37",
 							]
 						}
 					},
