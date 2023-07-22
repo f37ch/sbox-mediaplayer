@@ -84,18 +84,18 @@ public partial class WorldWeb:WorldPanel
 		}
 	}
 	
-	[Event.Client.BuildInput]
+	[GameEvent.Client.BuildInput]
 	public void BuildInput()
 	{
 		if (!ScreenUI.Menu.IsValid()){
 			WorldInput.Ray=Game.LocalPawn.AimRay;
-			WorldInput.MouseLeftPressed=Input.Down(InputButton.Use);
-			if (WorldInput.Hovered != null && Input.Down(InputButton.Use) && !Input.Down(InputButton.PrimaryAttack))
+			WorldInput.MouseLeftPressed=Input.Down("use");
+			if (WorldInput.Hovered != null && Input.Down("use") && !Input.Down("attack1"))
 			{
-				if (Input.Pressed(InputButton.Use)){
+				if (Input.Pressed("use")){
 					PlaySound("ui.button.press");
 				}
-				Input.ClearButton(InputButton.Use);
+				Input.ClearActions();
 			}
 			WorldInput.Enabled=true;
 		}else{
