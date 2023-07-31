@@ -15,7 +15,7 @@
 						[
 							{
 								from = "materials/hotspots/metal_painted_black_a_hs.vmat"
-								to = "materials/dev/dev_metal_rough90.vmat"
+								to = "materials/hotspots/metal_painted_red_b_hs.vmat"
 							},
 							{
 								from = "materials/hotspots/metal_painted_red_b_hs.vmat"
