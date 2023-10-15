@@ -6,8 +6,8 @@ function InitDB($server="localhost",$user="root",$pass="",$dbname="mediaplayer")
         id varchar(400) NOT NULL,
         type varchar(10) DEFAULT NULL,
         duration float(11) DEFAULT 0,
-        title varchar(100) DEFAULT NULL,
-        thumb varchar(200) DEFAULT NULL,
+        title varchar(400) DEFAULT NULL,
+        thumb varchar(400) DEFAULT NULL,
         PRIMARY KEY (id));"
     ];
     $connection = mysqli_connect($server,$user,$pass);
