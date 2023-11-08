@@ -60,7 +60,9 @@ if ($cached){
     $duration=ISO8601ToSeconds($ara->contentDetails->duration);
     $title=$database->real_escape_string($ara->snippet->title);
     $thumb=$ara->snippet->thumbnails->medium->url;
-    $database->query("INSERT INTO mediadata (id,type,duration,title,thumb) VALUES ('$id','$type','$duration','$title','$thumb')");
+    if ($duration!=0){
+        $database->query("INSERT INTO mediadata (id,type,duration,title,thumb) VALUES ('$id','$type','$duration','$title','$thumb')");
+    }
     echo json_encode(array("duration"=>$duration,"title"=>$title,"thumb"=>$thumb));
 }
 }elseif($type=="tw"){
